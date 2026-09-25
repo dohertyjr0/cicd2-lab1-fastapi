@@ -19,11 +19,10 @@ def test_bad_student_id_return_422(client, bad_student):
 
     assert response.status_code == 422
 
-def missing_user_returns_404(client):
+def test_missing_user_returns_404(client):
     response = client.get("/api/users/999")
-
     assert response.status_code == 404
-    assert response.json()["detail"] == "User not found" 
+    assert response.json()["detail"] == "User not Found"
 
 def test_delete_existing_user_returns_204(client):
     client.post("/api/users", json=user_payload(uid=20))
@@ -43,4 +42,18 @@ def test_deleted_user_can_no_longer_be_retrieved(client):
     print(response.json())
     assert response.status_code == 404
 
+def test_create_duplicate_user_returns_409(client):
+    client.post("/api/users", json=user_payload(uid=50))
+    response = client.post("/api/users", json=user_payload(uid=50))
+    assert response.status_code == 409
+    assert response.json()["detail"] == "A User with this ID exists"
 
+def test_get_existing_user_returns_200(client):
+    client.post("/api/users", json=user_payload(uid=51))
+    response = client.get("/api/users/51")
+    assert response.status_code == 200
+    
+def test_get_all_users_returns_200(client):
+    response = client.get("/api/users")
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
