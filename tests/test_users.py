@@ -18,5 +18,10 @@ def test_bad_student_id_return_422(client, bad_student):
     response = client.post("/api/users", json=user_payload(uid=3, student_id=bad_student))
 
     assert response.status_code == 422
+
+def missing_user_returns_404(client):
+    response = client.get("/api/users/999")
     
+    assert response.status_code == 404
+    assert response.json()["detail"] == "User not found"   
 
