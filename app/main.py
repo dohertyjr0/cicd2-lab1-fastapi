@@ -9,9 +9,9 @@ users: list[UserCreate] = []
 def health():
     return{"status": "ok"}
 
-@app.get("/hello")
-def hello():
-    return{"message": "Hello from FastAPI"}
+# @app.get("/hello")
+# def hello():
+#     return{"message": "Hello from FastAPI"}
 
 @app.post("/api/users", status_code = status.HTTP_201_CREATED)
 def add_user(new_user: UserCreate):
@@ -26,7 +26,7 @@ def add_user(new_user: UserCreate):
 def get_users():
     return users
 
-@app.get("/api/users/{users_id}")
+@app.get("/api/users/{user_id}")
 def get_user(user_id: int):
     for existing_user in users:
         if existing_user.user_id == user_id:
