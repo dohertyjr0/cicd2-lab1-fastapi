@@ -9,9 +9,9 @@ from app.schemas import UserCreate, UserRead
 Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Lab 3 - FastAPI SQLAlchemy User API")
 
-# @app.get("/health")
-# def health():
-#     return {"status": "ok"}
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 @app.post(
     "/api/users",
